@@ -1,4 +1,4 @@
-const Animal = require('../models/Modelanimal')
+const Animal = require('../models/ModelAnimal')
 const db = require('../config/database')
 const jwt = require('jsonwebtoken');
 
