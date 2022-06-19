@@ -10,6 +10,7 @@ router.get('/animal/campo', auth, AnimalController.ListaCampoUsuario);
 router.get('/animal/vendido', auth, AnimalController.ListaVendidoUsuario);
 router.get('/animal/morto', auth, AnimalController.ListaMortoUsuario);
 router.get('/animal/telaprincipal', auth, AnimalController.TelaPrincipal);
+router.get('/animal/pai', auth, AnimalController.PegaPai);
 router.get('/animal/:id', auth, AnimalController.PegaAnimalId);
 
 module.exports = router;

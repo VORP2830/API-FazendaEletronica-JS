@@ -91,7 +91,7 @@ class animalController {
         jwt.verify(tokenn, process.env.SECRET, (erro, decoded)=>{
            var iduser = decoded.iduser
 
-        db.query(`SELECT S.TXT_STATUS, COUNT(*) FROM TB_Animal A
+        db.query(`SELECT S.TXT_STATUS, COUNT(*) AS TOTAL FROM TB_Animal A
         JOIN TB_Finalidade F on A.ID_INT_FINALIDADE = F.ID_INT_FINALIDADE
         JOIN TB_Status S ON S.ID_INT_STATUS = A.ID_INT_STATUS
         JOIN TB_Tipo_Animal TA ON TA.ID_INT_TIPO_ANIMAL = A.ID_INT_TIPO_ANIMAL
@@ -156,6 +156,17 @@ class animalController {
                     }
                 }
             })
+        })
+    }
+
+    static async PegaPai (req, res) {
+        const tokenn = req.headers.token;
+        jwt.verify(tokenn, process.env.SECRET, (erro, decoded)=>{
+           var iduser = decoded.iduser
+            db.query(`SELECT ID_INT_ANIMAL, INT_NUMERO_ANIMAL FROM TB_Animal WHERE ID_INT_USUARIO_CRIADOR = ? AND CHA_SEXO = "F" `, [iduser], (erro, result) => {
+                if (erro) res.status(500).json(erro)
+                else res.status(200).json(result)
+                })
         })
     }
 };
