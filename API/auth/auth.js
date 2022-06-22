@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
-const cookieParser = require('cookie-parser');
 
 function auth(req, res, next){
     const token = req.headers.token;
@@ -9,7 +8,6 @@ function auth(req, res, next){
     jwt.verify(token, process.env.SECRET, (err, decoded) => {
       if (err) return res.status(500).json({ auth: false, mensagem: 'Falha ao tentar autentica o token' });
       
-      const iduser = decoded.iduser;
       next();
     });
 }

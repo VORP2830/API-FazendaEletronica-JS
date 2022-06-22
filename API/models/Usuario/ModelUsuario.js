@@ -1,5 +1,3 @@
-const UsuarioDb = require("./Usuario/Usuario-db");
-
 class Usuario {
     constructor(Usuario) {
         this.id = Usuario.id;

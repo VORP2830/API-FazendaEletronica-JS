@@ -1,6 +1,7 @@
-const Animal = require('../models/ModelAnimal')
+const Animal = require('../models/Animal/ModelAnimal')
 const db = require('../config/database')
 const jwt = require('jsonwebtoken');
+const IdUsuarioLogado = require('../utils/usuarioLogado');
 
 class animalController {
 
@@ -45,7 +46,8 @@ class animalController {
         JOIN TB_Finalidade F on A.ID_INT_FINALIDADE = F.ID_INT_FINALIDADE
         JOIN TB_Status S ON S.ID_INT_STATUS = A.ID_INT_STATUS
         JOIN TB_Tipo_Animal TA ON TA.ID_INT_TIPO_ANIMAL = A.ID_INT_TIPO_ANIMAL
-        WHERE A.ID_INT_USUARIO_CRIADOR = ? AND A.ID_INT_STATUS = 2`,[iduser], (erro, result) => {
+        WHERE A.ID_INT_USUARIO_CRIADOR = ? AND A.ID_INT_STATUS IN 
+        (SELECT ID_INT_STATUS FROM TB_Status WHERE TXT_STATUS LIKE 'Em Campo')`,[iduser], (erro, result) => {
             if(erro) res.status(500).json(erro);
             else res.status(200).json(result);
         })
@@ -62,7 +64,8 @@ class animalController {
         JOIN TB_Finalidade F on A.ID_INT_FINALIDADE = F.ID_INT_FINALIDADE
         JOIN TB_Status S ON S.ID_INT_STATUS = A.ID_INT_STATUS
         JOIN TB_Tipo_Animal TA ON TA.ID_INT_TIPO_ANIMAL = A.ID_INT_TIPO_ANIMAL
-        WHERE A.ID_INT_USUARIO_CRIADOR = ? AND A.ID_INT_STATUS = 1`,[iduser], (erro, result) => {
+        WHERE A.ID_INT_USUARIO_CRIADOR = ? AND A.ID_INT_STATUS IN 
+        (SELECT ID_INT_STATUS FROM TB_Status WHERE TXT_STATUS LIKE 'Vendido')`,[iduser], (erro, result) => {
             if(erro) res.status(500).json(erro);
             else res.status(200).json(result);
         })
@@ -79,7 +82,8 @@ class animalController {
         JOIN TB_Finalidade F on A.ID_INT_FINALIDADE = F.ID_INT_FINALIDADE
         JOIN TB_Status S ON S.ID_INT_STATUS = A.ID_INT_STATUS
         JOIN TB_Tipo_Animal TA ON TA.ID_INT_TIPO_ANIMAL = A.ID_INT_TIPO_ANIMAL
-        WHERE A.ID_INT_USUARIO_CRIADOR = ? AND A.ID_INT_STATUS = 3`,[iduser], (erro, result) => {
+        WHERE A.ID_INT_USUARIO_CRIADOR = ? AND A.ID_INT_STATUS IN
+        (SELECT ID_INT_STATUS FROM TB_Status WHERE TXT_STATUS LIKE 'Morto')`,[iduser], (erro, result) => {
             if(erro) res.status(500).json(erro);
             else res.status(200).json(result);
         })
@@ -168,6 +172,31 @@ class animalController {
                 else res.status(200).json(result)
                 })
         })
+    }
+
+    static async DeletaAnimalId (req, res) {
+        const tokenn = req.headers.token;
+        jwt.verify(tokenn, process.env.SECRET, (erro, decoded)=>{
+           var iduser = decoded.iduser
+            db.query(`SELECT * FROM TB_Animal WHERE ID_INT_ANIMAL = ?`, [req.params.id], (erro, result) => {
+                if (erro) res.status(500).json(erro)
+                else{
+                    if(iduser == result[0].ID_INT_USUARIO_CRIADOR){
+                        db.query(`DELETE FROM TB_Animal WHERE ID_INT_ANIMAL = ?`, [req.params.id], (erro) => {
+                            if (erro) res.status(500).json({mensagem: erro})
+                            else res.status(200).json({mensagem: "Animal deletado com sucesso"})
+                        })
+                    }else{
+                        res.status(401).json({mansagem: "Você não possui acesso"})
+                    }
+                }
+            })
+        })
+    }
+
+    static async Teste (req, res) {
+        const teste = await Animal.ListarMorto(await IdUsuarioLogado(req))
+        res.status(teste.code).json(teste.result)
     }
 };
 

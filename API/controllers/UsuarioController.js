@@ -1,5 +1,5 @@
-const Usuario = require('../models/ModelUsuario')
-const EnviarEmail = require('../config/email')
+const Usuario = require('../models/Usuario/ModelUsuario')
+const EnviarEmail = require('../utils/email')
 const { hash, compare } = require('bcrypt');
 require('dotenv').config()
 const db = require('../config/database');
@@ -44,7 +44,7 @@ class UsuarioController {
     static async Login (req, res) {
         const { login, password } = req.body;
 
-        if(login || password){
+        if(login && password){
             db.query(`SELECT * FROM TB_Usuario WHERE TXT_LOGIN = ?`, [login], (erro, result) => {
                 if(erro) res.status(500).json(erro)
                 else if(result.length == 0){

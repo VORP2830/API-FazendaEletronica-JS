@@ -1,4 +1,4 @@
-const TipoPagamento = require('../models/ModelTipoPagamento')
+const TipoPagamento = require('../models/TipoPagamento/ModelTipoPagamento')
 const db = require('../config/database');
 const jwt = require('jsonwebtoken');
 

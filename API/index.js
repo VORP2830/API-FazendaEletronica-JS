@@ -2,6 +2,8 @@ const express = require('express');
 const routes = require('./routes')
 require('dotenv').config()
 
+const a = require('../API/models/Animal/ModelAnimal')
+
 const app = express();
 const port = process.env.PORT;
 

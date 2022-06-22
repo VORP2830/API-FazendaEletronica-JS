@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const TipoFinalidadeController = require('../controllers/TipoFinalidadeController');
+const TipoFinalidadeController = require('../../controllers/TipoFinalidadeController');
 
 const router = Router();
 
