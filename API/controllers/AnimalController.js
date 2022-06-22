@@ -193,11 +193,44 @@ class animalController {
             })
         })
     }
-
-    static async Teste (req, res) {
-        const teste = await Animal.ListarMorto(await IdUsuarioLogado(req))
-        res.status(teste.code).json(teste.result)
+//NOVOS
+    static async ListarMorto (req, res) {
+        const result = await Animal.ListarMorto(await IdUsuarioLogado(req))
+        res.status(result.code).json(result.result)
     }
+
+    static async ListarCampo (req, res) {
+        const result = await Animal.ListarCampo(await IdUsuarioLogado(req))
+        res.status(result.code).json(result.result)
+    }
+
+    static async ListarVendido (req, res) {
+        const result = await Animal.ListarVendido(await IdUsuarioLogado(req))
+        res.status(result.code).json(result.result)
+    }
+
+    static async BuscarId (req, res) {
+        const result = await Animal.BuscarId(await IdUsuarioLogado(req), req.params.id)
+        res.status(result.code).json(result.result)
+    }
+
+    static async Adicionar (req, res) {
+        const { numero, id_pai, cha_sexo, id_finalidade, apelido, nascimento, status, tipo_animal } = req.body;
+        const animal = new Animal({
+            id_criador: await IdUsuarioLogado(req),
+            numero,
+            id_pai,
+            cha_sexo,
+            id_finalidade,
+            apelido,
+            nascimento,
+            status,
+            tipo_animal
+        })
+        const result = await Animal.Adicionar(animal)
+        res.status(result.code).json(result.result)
+    }
+
 };
 
 module.exports = animalController;

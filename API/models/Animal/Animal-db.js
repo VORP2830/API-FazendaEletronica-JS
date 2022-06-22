@@ -10,16 +10,17 @@ const db = require('../../config/database');
         return new Promise((resolve, rejects) => {
             db.query(`
             INSERT INTO TB_Animal
-            (ID_INT_USUARIO_CRIADOR, INT_NUMERO_ANIMAL, ID_INT_PAI, CHA_SEXO, ID_INT_FINALIDADE, TXT_APELIDO, DAT_NASICMENTO, ID_INT_STATUS, ID_INT_TIPO_ANIMAL)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [Animal.id_criador, Animal.numero, Animal.id_pai, Animal.cha_sexo, Animal.id_finalidade, Animal.apelido, Animal.nascimento, Animal.status, Animal.tipo_animal], erro => {
+            (ID_INT_USUARIO_CRIADOR, INT_NUMERO_ANIMAL, ID_INT_PAI, CHA_SEXO, ID_INT_FINALIDADE, TXT_APELIDO, DAT_NASCIMENTO, ID_INT_STATUS, ID_INT_TIPO_ANIMAL, DAT_MODIFICACAO)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
+            [Animal.id_criador, Animal.numero, Animal.id_pai, Animal.cha_sexo, Animal.id_finalidade, Animal.apelido, Animal.nascimento, Animal.status, Animal.tipo_animal], 
+            erro => {
                 if (erro) rejects({code: 500, result: erro});
                 else resolve ({code: 201, mensagem: "Animal cadastrado com sucesso"});
             })
         })
     },
 
-    BuscaId: id => {
+    Buscar: id => {
         return new Promise((resolve, rejects) => {
             db.query(`SELECT * FROM TB_Animal WHERE ID_INT_ANIMAL = ?`, 
             [id], (erro, result) => {
@@ -29,7 +30,7 @@ const db = require('../../config/database');
         })
     },
 
-    DeleteId: id => {
+    Deletar: id => {
         return new Promise((resolve, rejects) => {
             db.query(`DELETE FROM TB_Animal WHERE ID_INT_ANIMAL = ?`, 
             [id], (erro) => {
@@ -52,7 +53,7 @@ const db = require('../../config/database');
         })
     },
 
-    BuscarCriador: IdUsuarioLogado => {
+    BuscarPorCriador: IdUsuarioLogado => {
         return new Promise((resolve, rejects) => {
             db.query(`SELECT * FROM TB_Animal WHERE ID_INT_USUARIO_CRIADOR = ?`, 
             [IdUsuarioLogado], (erro, result) => {
@@ -66,16 +67,16 @@ const db = require('../../config/database');
         return new Promise((resolve, rejects) => {
             db.query(`SELECT ID_INT_USUARIO_CRIADOR FROM TB_Animal WHERE ID_INT_ANIMAL = ?`[AnimalId], 
             (erro, result) => {
-                if (erro) rejects (erro)
+                if (erro) rejects (erro);
                 else{
-                    if(result.length > 0){
+                    if(result.length == 1){
                         if (result[0].ID_INT_USUARIO_CRIADOR == IdUsuarioLogado){
-                            return resolve (true);
+                            resolve (true);
                         }else {
-                            return false;
+                            resolve (false);
                         }
                     }else{
-                        return false;
+                        resolve (false);
                     }
                 }
             })
