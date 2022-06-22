@@ -14,11 +14,11 @@ class Animal {
         this.tipo_animal = animal.tipo_animal;
     };
 
-    static async Adicionar () {
-        return await AnimalDb.Insert(this);
+    static async Adicionar (animal) {
+        return await AnimalDb.Insert(animal);
     };
 
-    static async BuscarId (id) {
+    static async BuscarId (IdUser, id) {
         if (await AnimalDb.TemPermissao(IdUser, id)) {
             return await AnimalDb.BuscaId(id);
         } else {
@@ -26,7 +26,7 @@ class Animal {
         };
     };
 
-    static async Deletar (id) {
+    static async Deletar (IdUser, id) {
         if(await AnimalDb.TemPermissao(IdUser, id)) {
             return await AnimalDb.DeleteId(id);
         } else {
@@ -34,9 +34,9 @@ class Animal {
         };
     };
 
-    static async Alterar () {
+    static async Alterar (IdUser, id, animal) {
         if (await AnimalDb.TemPermissao(IdUser, id)) {
-            return await AnimalDb.Update(this);
+            return await AnimalDb.Update(animal);
         } else {
             return `Você não tem permissão para realizar essa operação`;
         }
