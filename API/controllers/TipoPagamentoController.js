@@ -1,75 +1,51 @@
 const TipoPagamento = require('../models/TipoPagamento/ModelTipoPagamento')
 const db = require('../config/database');
 const jwt = require('jsonwebtoken');
+const IdUsuarioLogado = require('../utils/usuarioLogado');
 
 class TipoPagamentoController {
 
-    static async Adiciona (req, res) {
-        const tokenn = req.headers.token;
-        jwt.verify(tokenn, process.env.SECRET, (erro, decoded)=>{
-           var iduser = decoded.iduser
-
+    static async Adicionar (req, res) {
         const { id, nome, descricao } = req.body;
-            const tipopagamento = new TipoPagamento({
-                id,
-                nome,
-                descricao,
-                id_criador: iduser
+        const tipopagamento = new TipoPagamento({
+            id,
+            nome,
+            descricao,
+            id_criador: await IdUsuarioLogado(req),
+            ativo
 
-            })
-            db.query(`INSERT INTO TB_Tipo_Pagamento (TXT_NOME, TXT_DESCRICAO, ID_INT_USUARIO_CRIADOR) VALUES (?,?,?)`, 
-            [tipopagamento.nome, tipopagamento.descricao, tipopagamento.id_criador], (erro) => {
-                if(erro) res.status(500).json(erro)
-                else res.status(201).json({mensagem: "Tipo de pagamento adicionado"})
-            })
         })
+        const result = await TipoPagamento.Adicionar(tipopagamento)
+        res.status(result.code).json(result.result)
+    }
+//Atualizar não esta funcionando
+    static async Atualizar (req, res) {
+        const { id, nome, descricao, ativo } = req.body;
+        const tipopagamento = new TipoPagamento({
+            id,
+            nome,
+            descricao,
+            id_criador: await IdUsuarioLogado(req),
+            ativo
 
-    };
-
-    static async PegaTipoPagamento (req, res) {
-        const tokenn = req.headers.token;
-        jwt.verify(tokenn, process.env.SECRET, (erro, decoded)=>{
-           var iduser = decoded.iduser
-
-           db.query(`SELECT * FROM TB_Tipo_Pagamento WHERE ID_INT_USUARIO_CRIADOR = ?`, [iduser], (erro, result) => {
-            if(erro) res.status(500).json(erro);
-            else res.status(200).json(result);
-           })
         })
+        const result = await TipoPagamento.Atualizar(tipopagamento)
+        res.status(result.code).json(result.result)
     }
 
-    static async Atualizar (req, res) {
-        const tokenn = req.headers.token;
-        jwt.verify(tokenn, process.env.SECRET, (erro, decoded)=>{
-           var iduser = decoded.iduser
+    static async Deletar (req, res) {
+        const result = await TipoPagamento.Deletar(await IdUsuarioLogado(req), req.params.id) 
+        res.status(result.code).json(result.result)
+    }
 
-        const { id, nome, descricao } = req.body;
-            const tipopagamento = new TipoPagamento({
-                id,
-                nome,
-                descricao,
-                id_criador: iduser
+    static async Buscar (req, res) {
+        const result = await TipoPagamento.Buscar(await IdUsuarioLogado(req), req.params.id)
+        res.status(result.code).json(result.result)
+    }
 
-            })
-
-            db.query(`SELECT * FROM TB_Tipo_Pagamento WHERE ID_INT_TIPO_PAGAMENTO = ?`, [id], (erro, result) => {
-                if(erro) res.status(500).json(erro)
-                else if (result.length == 1){
-                    var SelectCriador = result[0].ID_INT_USUARIO_CRIADOR;
-                    if(SelectCriador == iduser){
-                        db.query(`UPDATE TB_Tipo_Pagamento SET TXT_NOME = ?, TXT_DESCRICAO = ? WHERE ID_INT_TIPO_PAGAMENTO = ?`, 
-                        [tipopagamento.nome, tipopagamento.descricao, tipopagamento.id], (erro) => {
-                            if(erro) res.status(500).json(erro)
-                            else res.status(201).json({mensagem: "Tipo de pagamento atualizado"})
-                        })
-                    }else{
-                        res.status(401).json({mensagem: "Você não tem autorizaçao para realizar essa operação"})
-                    }
-                }else{
-                    res.status(500).json({mensagem: "Algo de errado aconteceu"})
-                }
-            })
-        })
+    static async Listar (req, res) {
+        const result = await TipoPagamento.Listar(await IdUsuarioLogado(req))
+        res.status(result.code).json(result.result)
     }
 };
 

@@ -14,31 +14,31 @@ class Animal {
         this.tipo_animal = animal.tipo_animal;
     };
 
-    static async Adicionar () {
-        return await AnimalDb.Insert(this);
+    static async Adicionar (animal) {
+        return await AnimalDb.Adicionar(animal);
     };
 
-    static async BuscarId (id) {
-        if (await AnimalDb.TemPermissao(IdUser, id)) {
-            return await AnimalDb.BuscaId(id);
+    static async Buscar (IdUsuarioLogado, Id) {
+        if (await AnimalDb.TemPermissao(IdUsuarioLogado, Id)) {
+            return await AnimalDb.Buscar(Id);
         } else {
-            return `Você não tem permissão para realizar essa operação`;
+            return {code: 401, result: `Você não tem permissão para realizar essa operação`}
         };
     };
 
-    static async Deletar (id) {
-        if(await AnimalDb.TemPermissao(IdUser, id)) {
-            return await AnimalDb.DeleteId(id);
+    static async Deletar (IdUsuarioLogado, Id) {
+        if(await AnimalDb.TemPermissao(IdUsuarioLogado, Id)) {
+            return await AnimalDb.Deletar(Id);
         } else {
-            return `Você não tem permissão para realizar essa operação`;
+            return {code: 401, result: `Você não tem permissão para realizar essa operação`}
         };
     };
 
-    static async Alterar () {
-        if (await AnimalDb.TemPermissao(IdUser, id)) {
-            return await AnimalDb.Update(this);
+    static async Alterar (IdUsuarioLogado, animal) {
+        if (await AnimalDb.TemPermissao(IdUsuarioLogado, animal.id)) {
+            return await AnimalDb.Update(animal);
         } else {
-            return `Você não tem permissão para realizar essa operação`;
+            return {code: 401, result: `Você não tem permissão para realizar essa operação`};
         }
     };
 

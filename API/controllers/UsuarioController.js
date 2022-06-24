@@ -4,10 +4,11 @@ const { hash, compare } = require('bcrypt');
 require('dotenv').config()
 const db = require('../config/database');
 const jwt = require('jsonwebtoken');
+const UsuarioDb = require('../models/Usuario/Usuario-db');
 
 class UsuarioController {
 
-    static async Adiciona (req, res) {
+    static async Adicionar (req, res) {
         const { login, password, nome, email } = req.body;
 
             const hashPassword = await hash(password, 10);
@@ -101,6 +102,7 @@ class UsuarioController {
             }
         })
     }
+
 };
 
 module.exports = UsuarioController;
