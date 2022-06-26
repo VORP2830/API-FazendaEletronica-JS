@@ -7,7 +7,7 @@ function IdUsuarioLogado (req) {
 
         jwt.verify(token, process.env.SECRET, (erro, decoded)=>{
             if(erro) rejects (erro);
-            else resolve (decoded.iduser);
+            else resolve (decoded.IdUsuario);
             
         })
     })
