@@ -3,7 +3,7 @@ const { compare } = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const EnviarEmail = require("../../utils/email");
 require(`dotenv`).config()
-const URL = `http://localhost:3000/`
+const URL = process.env.HOST_URL
 
 class Usuario {
     constructor(Usuario) {
