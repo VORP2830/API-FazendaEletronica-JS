@@ -1,4 +1,5 @@
 const { rejects } = require('assert');
+const { userInfo } = require('os');
 const { resolve } = require('path');
 const { promise, resume } = require('../../config/database');
 const db = require('../../config/database');
@@ -7,6 +8,8 @@ const db = require('../../config/database');
  module.exports = {
 
     Adicionar: Usuario => {
+        console.log(Usuario.login)
+        console.log(Usuario.email)
         return new Promise((resolve, rejects) => {
             db.query(`INSERT INTO TB_Usuario (TXT_LOGIN, TXT_PASSWORD, TXT_NOME, TXT_EMAIL) VALUES (?, ?, ?, ?)`,
             [Usuario.login, Usuario.password, Usuario.nome, Usuario.email], erro => {
