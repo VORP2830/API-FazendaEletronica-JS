@@ -1,5 +1,4 @@
 const Usuario = require('../models/Usuario/ModelUsuario')
-const EnviarEmail = require('../utils/email')
 const { hash } = require('bcrypt');
 require('dotenv').config()
 const db = require('../config/database');
