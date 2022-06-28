@@ -1,6 +1,6 @@
-const Pagamento = require('../models/Pagamento/ModelPagamento')
-const db = require('../config/database');
-const IdUsuarioLogado = require('../utils/usuarioLogado');
+const Pagamento = require('../../service/Pagamento/ModelPagamento')
+const db = require('../../config/database');
+const IdUsuarioLogado = require('../../utils/usuarioLogado');
 
 class PagamentoController {
 

@@ -1,4 +1,4 @@
-const AnimalDb = require('./Animal-db');
+const AnimalDb = require('../../models/Animal/Animal-db')
 
 class Animal {
     constructor(animal) {

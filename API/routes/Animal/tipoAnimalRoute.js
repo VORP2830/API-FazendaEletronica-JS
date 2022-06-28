@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const TipoAnimalController = require('../../controllers/TipoAnimalController');
+const TipoAnimalController = require('../../controllers/Animal/TipoAnimalController');
 
 const router = Router();
 
