@@ -1,4 +1,4 @@
-const TipoPagamentoDb = require("./TipoPagamento-db");
+const TipoPagamentoDb = require("../../models/TipoPagamento/TipoPagamento-db");
 
 class TipoPagamento {
     constructor(tipoPagamento) {

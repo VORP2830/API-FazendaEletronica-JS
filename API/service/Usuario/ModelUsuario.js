@@ -1,4 +1,4 @@
-const UsuarioDb = require("./Usuario-db");
+const UsuarioDb = require("../../models/Usuario/Usuario-db");
 const { compare } = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const EnviarEmail = require("../../utils/email");

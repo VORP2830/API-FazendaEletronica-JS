@@ -1,4 +1,4 @@
-const PagamentoDb = require('./Pagamento-db');
+const PagamentoDb = require('../../models/Pagamento/Pagamento-db');
 
 class Pagamento {
     constructor(pagamento) {
