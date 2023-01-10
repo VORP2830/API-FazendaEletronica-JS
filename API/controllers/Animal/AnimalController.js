@@ -3,7 +3,7 @@ const db = require('../../config/database')
 const jwt = require('jsonwebtoken');
 const IdUsuarioLogado = require('../../utils/usuarioLogado');
 
-class animalController {
+class AnimalController {
 
     static async Buscar (req, res) {
         const result = await Animal.Buscar(await IdUsuarioLogado(req), req.params.id);
@@ -75,4 +75,4 @@ class animalController {
     }
 };
 
-module.exports = animalController;
+module.exports = AnimalController;

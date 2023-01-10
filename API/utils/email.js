@@ -1,7 +1,7 @@
 const nodemail = require('nodemailer');
 require('dotenv').config()
 
-    remetente = nodemail.createTransport({
+    const remetente = nodemail.createTransport({
         host: 'smtp.gmail.com',
         port: 587,
         secure: false,
