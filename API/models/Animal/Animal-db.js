@@ -81,11 +81,12 @@ const db = require('../../config/database');
 
     ListarCampo: (IdUsuarioLogado) => {
         return new Promise((resolve, rejects) => {
-            db.query(`SELECT A.ID_INT_ANIMAL, A.INT_NUMERO_ANIMAL, A.ID_INT_PAI, A.CHA_SEXO, 
+            db.query(`SELECT A.ID_INT_ANIMAL, A.INT_NUMERO_ANIMAL, AP.INT_NUMERO_ANIMAL AS NUMERO_PAI, A.CHA_SEXO, 
             F.TXT_NOME, A.TXT_APELIDO, A.DAT_NASCIMENTO, S.TXT_STATUS, TA.TXT_NOME FROM TB_Animal A
             JOIN TB_Finalidade F on A.ID_INT_FINALIDADE = F.ID_INT_FINALIDADE
             JOIN TB_Status S ON S.ID_INT_STATUS = A.ID_INT_STATUS
             JOIN TB_Tipo_Animal TA ON TA.ID_INT_TIPO_ANIMAL = A.ID_INT_TIPO_ANIMAL
+            JOIN TB_Animal AP ON AP.ID_INT_PAI = A.ID_INT_ANIMAL
             WHERE A.ID_INT_USUARIO_CRIADOR = ? AND A.ID_INT_STATUS IN
             (SELECT ID_INT_STATUS FROM TB_Status WHERE TXT_STATUS LIKE 'Em Campo')`, 
             [IdUsuarioLogado], (erro, result) => {
@@ -97,11 +98,12 @@ const db = require('../../config/database');
 
     ListarVendido: (IdUsuarioLogado) => {
         return new Promise((resolve, rejects) => {
-            db.query(`SELECT A.ID_INT_ANIMAL, A.INT_NUMERO_ANIMAL, A.ID_INT_PAI, A.CHA_SEXO, 
+            db.query(`SELECT A.ID_INT_ANIMAL, A.INT_NUMERO_ANIMAL, AP.INT_NUMERO_ANIMAL AS NUMERO_PAI, A.CHA_SEXO, 
             F.TXT_NOME, A.TXT_APELIDO, A.DAT_NASCIMENTO, S.TXT_STATUS, TA.TXT_NOME FROM TB_Animal A
             JOIN TB_Finalidade F on A.ID_INT_FINALIDADE = F.ID_INT_FINALIDADE
             JOIN TB_Status S ON S.ID_INT_STATUS = A.ID_INT_STATUS
             JOIN TB_Tipo_Animal TA ON TA.ID_INT_TIPO_ANIMAL = A.ID_INT_TIPO_ANIMAL
+            JOIN TB_Animal AP ON AP.ID_INT_PAI = A.ID_INT_ANIMAL
             WHERE A.ID_INT_USUARIO_CRIADOR = ? AND A.ID_INT_STATUS IN 
             (SELECT ID_INT_STATUS FROM TB_Status WHERE TXT_STATUS LIKE 'Vendido')`, 
             [IdUsuarioLogado], (erro, result) => {
@@ -113,11 +115,12 @@ const db = require('../../config/database');
 
     ListarMorto: (IdUsuarioLogado) => {
         return new Promise((resolve, rejects) => {
-            db.query(`SELECT A.ID_INT_ANIMAL, A.INT_NUMERO_ANIMAL, A.ID_INT_PAI, A.CHA_SEXO, 
+            db.query(`SELECT A.ID_INT_ANIMAL, A.INT_NUMERO_ANIMAL, AP.INT_NUMERO_ANIMAL AS NUMERO_PAI, A.CHA_SEXO, 
             F.TXT_NOME, A.TXT_APELIDO, A.DAT_NASCIMENTO, S.TXT_STATUS, TA.TXT_NOME FROM TB_Animal A
             JOIN TB_Finalidade F on A.ID_INT_FINALIDADE = F.ID_INT_FINALIDADE
             JOIN TB_Status S ON S.ID_INT_STATUS = A.ID_INT_STATUS
             JOIN TB_Tipo_Animal TA ON TA.ID_INT_TIPO_ANIMAL = A.ID_INT_TIPO_ANIMAL
+            JOIN TB_Animal AP ON AP.ID_INT_PAI = A.ID_INT_ANIMAL
             WHERE A.ID_INT_USUARIO_CRIADOR = ? AND A.ID_INT_STATUS IN 
             (SELECT ID_INT_STATUS FROM TB_Status WHERE TXT_STATUS LIKE 'Morto')`, 
             [IdUsuarioLogado], (erro, result) => {

@@ -9,9 +9,7 @@ class TipoPagamentoController {
             id,
             nome,
             descricao,
-            id_criador: await IdUsuarioLogado(req),
-            ativo
-
+            id_criador: await IdUsuarioLogado(req)
         })
         const result = await TipoPagamento.Adicionar(tipopagamento)
         res.status(result.code).json(result.result)

@@ -54,7 +54,7 @@ class Usuario {
             IdUsuario: usuario.result[0].ID_INT_USUARIO, 
             HoraExpiracao: Hora.getHours()+1 + ":" + Hora.getMinutes()
         }, process.env.SECRET, {expiresIn: 1200 /*Expira em 1 hora*/})
-        const link = `${URL}${Token}`
+        const link = `${process.env.URL_FRONT}login/forgot/${Token}`
         const TextoEmail = `<p style="text-align: center;"><img class="n3VNCb KAlRDb" src="https://static.vecteezy.com/ti/vetor-gratis/t2/1592203-farm-landscape-with-field-and-red-barn-in-summer-season-gr%C3%A1tis-vetor.jpg" alt="Fazenda Eletr&ocirc;nica" width="351" height="118" data-noaft="1"></p>
 <p style="text-align: center;">Ol&aacute; <strong>${usuario.result[0].TXT_NOME}!</strong></p>
 <p style="text-align: center;">Essa&nbsp;email &eacute;&nbsp;referente ao seu pedido de&nbsp;altera&ccedil;&atilde;o de&nbsp;senha.</p>
@@ -65,7 +65,7 @@ class Usuario {
 <p style="text-align: center;">Se n&atilde;o foi voc&ecirc; quem pediu&nbsp;a alter&ccedil;&atilde;o&nbsp;pode&nbsp;ignorar esse email.</p>
 <p style="text-align: center;">Abra&ccedil;os da equipe da Fazenda Eletr&ocirc;nica.</p>
 <p style="text-align: center;">&nbsp;</p>
-<p style="text-align: center;"><a title="Clique aqui" href="http://fazendaeletronica.herokuapp.com" target="_blank" rel="noopener">Clique aqui</a>&nbsp;para acessar nosso site.</p>`
+<p style="text-align: center;"><a title="Clique aqui" href="${process.env.URL_FRONT}" target="_blank" rel="noopener">Clique aqui</a>&nbsp;para acessar nosso site.</p>`
         EnviarEmail(usuario.result[0].TXT_EMAIL, `Precisa alterar sua senha?`, TextoEmail)
         return {code: 200, result: `Email enviado com link de alterção de senha`}
     }
