@@ -1,7 +1,6 @@
 const Usuario = require('../../service/Usuario/ModelUsuario')
 const { hash } = require('bcrypt');
 require('dotenv').config()
-const db = require('../../config/database');
 const jwt = require('jsonwebtoken');
 const IdUsuarioLogado = require('../../utils/usuarioLogado');
 

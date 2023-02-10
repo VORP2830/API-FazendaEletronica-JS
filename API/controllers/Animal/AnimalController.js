@@ -1,6 +1,4 @@
 const Animal = require('../../service/Animal/ModelAnimal')
-const db = require('../../config/database')
-const jwt = require('jsonwebtoken');
 const IdUsuarioLogado = require('../../utils/usuarioLogado');
 
 class AnimalController {

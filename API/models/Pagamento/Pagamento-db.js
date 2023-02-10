@@ -1,6 +1,3 @@
-const { rejects } = require('assert');
-const { resolve } = require('path');
-const { promise, resume } = require('../../config/database');
 const db = require('../../config/database');
 
 
@@ -13,7 +10,7 @@ const db = require('../../config/database');
             VALUES(?,?,?,?,?,?)`, 
             [Pagamento.id_criador, Pagamento.id_tipo, Pagamento.char_tipo, Pagamento.descricao, Pagamento.data_pagamento,Pagamento.valor_pagamento],
             erro => {
-                if (erro) rejects({code: 500, result: `Erro ao inserir pagamento`})
+                if (erro) rejects({code: 500, error: `Erro ao inserir pagamento`})
                 else resolve({code: 201, result: `Pagamento adicionado`})
             })
         })
@@ -27,7 +24,7 @@ const db = require('../../config/database');
                 WHERE ID_INT_PAGAMENTO = ?`,
                 [Pagamento.id_tipo, Pagamento.char_tipo, Pagamento.descricao, Pagamento.data_pagamento, 
                 Pagamento.valor_pagamento, Pagamento.id], erro => {
-                    if (erro) rejects({code: 500, result: `Erro ao atualizar pagamento`})
+                    if (erro) rejects({code: 500, error: `Erro ao atualizar pagamento`})
                     else resolve ({code: 200, result: `Pagamento alterado`})
                 })
         })
@@ -37,7 +34,7 @@ const db = require('../../config/database');
         return new Promise((resolve, rejects) => {
             db.query(`SELECT * FROM TB_Pagamento WHERE ID_INT_PAGAMENTO = ?`, 
             [id], (erro, result) => {
-                if (erro) rejects({code: 500, result: "Pagamento inexistente"});
+                if (erro) rejects({code: 500, error: "Pagamento inexistente"});
                 else resolve({code: 200, result: result});
             })
         })
@@ -46,7 +43,7 @@ const db = require('../../config/database');
     Deletar: id => {
         return new Promise((resolve, rejects) => {
             db.query(`DELETE FROM TB_Pagamento WHERE ID_INT_PAGAMENTO = ?`,[id], (erro) => {
-                if (erro) console.log(erro);
+                if (erro) rejects({code: 500, error: "Erro ao excluir pagamento"});
                 else resolve({code: 200, result: "Pagamento excluido"})
             })
         })
@@ -56,7 +53,7 @@ const db = require('../../config/database');
         return new Promise((resolve, rejects) => {
             db.query(`SELECT * FROM TB_Pagamento WHERE ID_INT_USUARIO_CRIADOR = ?`, 
             [IdUsuarioLogado], (erro, result) => {
-                if (erro) rejects({code: 500, result: "Não existem pagamentos cadastrados"});
+                if (erro) rejects({code: 500, error: "Não existem pagamentos cadastrados"});
                 else resolve ({code: 200, result: result});
             })
         })
@@ -69,7 +66,7 @@ const db = require('../../config/database');
                         WHERE ID_INT_USUARIO_CRIADOR = ? AND 
                         YEAR(DAT_PAGAMENTO ) = YEAR(NOW()) AND MONTH(DAT_PAGAMENTO) = MONTH(NOW())
                         GROUP BY CHAR_TIPO_ENTRADA_SAIDA`, [IdUsuarioLogado], (erro, result) => {
-                if (erro) rejects({code: 500, result: `Erro ao pegar pagamentos`})
+                if (erro) rejects({code: 500, error: `Erro ao pegar pagamentos`})
                 else resolve({code: 200, result: result})
             })
         })

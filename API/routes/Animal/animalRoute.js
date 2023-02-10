@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const auth = require('../../auth/auth');
-const { removeListener } = require('../../config/database');
 const AnimalController = require('../../controllers/Animal/AnimalController');
 
 const router = Router();
